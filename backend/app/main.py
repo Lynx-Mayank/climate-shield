@@ -24,6 +24,7 @@ DATABASE_URL = os.getenv(
 SESSION_COOKIE = "climateshield_session"
 SESSION_DAYS = 7
 COOKIE_SECURE = os.getenv("CLIMATESHIELD_COOKIE_SECURE", "false").lower() == "true"
+COOKIE_SAMESITE = "none" if COOKIE_SECURE else "lax"
 ALLOWED_ORIGINS = [
     origin.strip()
     for origin in os.getenv(
@@ -297,7 +298,7 @@ def create_session(user: User, response: Response, db: Session) -> None:
         max_age=SESSION_DAYS * 24 * 60 * 60,
         httponly=True,
         secure=COOKIE_SECURE,
-        samesite="lax",
+        samesite=COOKIE_SAMESITE,
         path="/",
     )
 
@@ -421,7 +422,13 @@ def logout(request: Request, response: Response, db: Database):
         if auth_session:
             db.delete(auth_session)
             db.commit()
-    response.delete_cookie(SESSION_COOKIE, httponly=True, secure=COOKIE_SECURE, samesite="lax", path="/")
+    response.delete_cookie(
+        SESSION_COOKIE,
+        httponly=True,
+        secure=COOKIE_SECURE,
+        samesite=COOKIE_SAMESITE,
+        path="/",
+    )
 
 
 @app.get("/api/auth/me")
