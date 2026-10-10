@@ -1,0 +1,10 @@
+{
+  "description": "Delivers real-time climate risk insights and tailored tools for Indian MSMEs and financial institutions to enhance resilience and secure financing.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
